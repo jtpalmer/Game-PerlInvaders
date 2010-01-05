@@ -1,13 +1,13 @@
-use 5.010; use strict; use warnings;
-use SDL::App;
-use SDL::Event;
-use SDL::Constants;
-use Game::PerlInvaders::Sprite;
-use Game::PerlInvaders::App;
+#!/usr/bin/env perl
+use 5.010;
+use strict;
+use warnings;
+use Game::PerlInvaders;
 
-my $app=Game::PerlInvaders::App->new(
-    background_image=>'stuff/stars.png',
-);
+Game::PerlInvaders::setup;
+Game::PerlInvaders::run;
+
+__END__
 
 my $onion = Game::PerlInvaders::Sprite->new(
     image=>'onion.png',
