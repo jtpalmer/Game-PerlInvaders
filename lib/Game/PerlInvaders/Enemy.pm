@@ -18,7 +18,7 @@ sub setup {
 has 'state' => (is => 'rw', isa => 'Int');
 has 'row' => (is => 'rw', isa => 'Int');
 
-my $speed = 0; # pixels per milisecond
+my $speed = 0.05; # pixels per milisecond
 my $speed_mod = 0.6; # final speed increment
 my $row_height = 40;
 
