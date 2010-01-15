@@ -45,7 +45,8 @@ sub timer_callback {
     lock @Game::PerlInvaders::Shared::event_to_timer;
     while (my $evt = shift @Game::PerlInvaders::Shared::event_to_timer) {
       if ($evt eq 'shoot' && !$shot) {
-        $shot = Game::PerlInvaders::Shot->new(rect => $player->rect);
+        $shot = Game::PerlInvaders::Shot->new(rect => SDL::Rect->new($player->rect->x, $player->rect->y,
+                                                                     $player->rect->w, $player->rect->h));
       }
     }
   }

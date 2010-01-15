@@ -26,19 +26,19 @@ sub time_lapse {
   my ($self, $oldtime, $now, $shot) = @_;
 
   my $change = int((($now - $oldtime)*($speed+($speed_mod*($self->row / 12))))+0.5);
+  my $rect = $self->rect;
 
   if ($self->state == 0) {
 
-    my $limit = $Game::PerlInvaders::Shared::width - $self->rect->w;
-    my $dest = $self->rect->x + $change;
+    my $limit = $Game::PerlInvaders::Shared::width - $rect->w;
+    my $dest = $rect->x + $change;
 
     if ($dest < $limit) {
-      $self->rect(SDL::Rect->new($dest, $self->rect->y,
-                                 $self->rect->w, $self->rect->h));
+      $rect->x($dest);
     } else {
       my $left = $dest - $limit;
-      $self->rect(SDL::Rect->new($limit, $self->rect->y + $left,
-                                 $self->rect->w, $self->rect->h));
+      $rect->x($limit);
+      $rect->y($rect->y + $left);
       $self->state(1)
     }
   } elsif ($self->state == 1 || $self->state == 3) {
@@ -47,34 +47,31 @@ sub time_lapse {
     my $dest = ($self->rect->y + $change);
 
     if ($dest < $limit) {
-      $self->rect(SDL::Rect->new($self->rect->x, $dest,
-                                 $self->rect->w, $self->rect->h));
+      $rect->y($dest);
     } else {
       my $left = $dest - $limit;
 
       $self->row($self->row + 1);
       if ($self->state == 1) {
-        $self->rect(SDL::Rect->new($self->rect->x - $left, $limit,
-                                   $self->rect->w, $self->rect->h));
+        $rect->x($rect->x - $left);
+        $rect->y($limit);
         $self->state(2);
       } else {
-        $self->rect(SDL::Rect->new($self->rect->x + $left, $limit,
-                                   $self->rect->w, $self->rect->h));
+        $rect->x($rect->x + $left);
+        $rect->y($limit);
         $self->state(0);
       }
     }
   } else {
 
-    my $dest = ($self->rect->x - $change);
+    my $dest = ($rect->x - $change);
 
     if ($dest > 0) {
-      $self->rect(SDL::Rect->new($dest, $self->rect->y,
-                                 $self->rect->w, $self->rect->h));
+      $rect->x($dest);
     } else {
       my $left = 0 - $dest;
-
-      $self->rect(SDL::Rect->new(0, $self->rect->y + $left,
-                                 $self->rect->w, $self->rect->h));
+      $rect->x(0);
+      $rect->y($rect->y + $left);
       $self->state(3)
     }
   }

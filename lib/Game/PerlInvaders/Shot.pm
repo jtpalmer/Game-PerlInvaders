@@ -16,8 +16,7 @@ sub time_lapse {
   my $change = (($now - $oldtime)*$speed);
 
   if ($self->rect->y - $change > 0) {
-    $self->rect(SDL::Rect->new($self->rect->x, $self->rect->y - $change,
-                               $self->rect->w, $self->rect->h));
+    $self->rect->y($self->rect->y - $change);
     return 1;
   } else {
     return 0;

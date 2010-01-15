@@ -19,12 +19,10 @@ sub time_lapse {
 
   if (($mask & 1) &&
       (($self->rect->x - $change) > 0)) {
-    $self->rect(SDL::Rect->new($self->rect->x - $change, $self->rect->y,
-                               $self->rect->w, $self->rect->h));
+    $self->rect->x($self->rect->x - $change);
   } elsif ($mask & 2 &&
            (($self->rect->x + $change) < ($Game::PerlInvaders::Shared::width - $surface_rect->w))) {
-    $self->rect(SDL::Rect->new($self->rect->x + $change, $self->rect->y,
-                               $self->rect->w, $self->rect->h));
+    $self->rect->x($self->rect->x + $change);
   }
   return 1;
 }
