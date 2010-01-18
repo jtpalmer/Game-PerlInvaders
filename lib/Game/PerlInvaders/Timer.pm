@@ -37,7 +37,7 @@ sub timer_callback {
 
   if ($game_state != 1) {
 
-    $player = Game::PerlInvaders::Player->new(rect => SDL::Rect->new(0, 450, 20, 20));
+    $player ||= Game::PerlInvaders::Player->new(rect => SDL::Rect->new(0, 440, 20, 20));
     @enemies = ();
     for my $row (1..4) {
       for my $col (1..8) {
