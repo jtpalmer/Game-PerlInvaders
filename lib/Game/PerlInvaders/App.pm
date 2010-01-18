@@ -30,6 +30,7 @@ sub start_frame {
 }
 
 sub end_frame {
+  return unless @_;
   SDL::Video::update_rects($app, @_);
 }
 
