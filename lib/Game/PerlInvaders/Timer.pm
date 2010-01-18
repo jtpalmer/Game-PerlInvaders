@@ -11,7 +11,9 @@ use SDL::Time;
 use Game::PerlInvaders::Enemy;
 use Game::PerlInvaders::Shot;
 use Game::PerlInvaders::Player;
+use Game::PerlInvaders::Explosion;
 
+my @explosions;
 my @enemies;
 my $shot;
 my $player;
@@ -91,10 +93,31 @@ sub timer_callback {
     push @update_rects, get_enemies_rects(@enemies);
 
     @enemies =
-      grep { $_->time_lapse($oldtime, $now, $shot) or undef $shot }
+      grep {
+        $_->time_lapse($oldtime, $now, $shot)
+        or do {
+          undef $shot;
+          push @explosions, Game::PerlInvaders::Explosion->new(rect => SDL::Rect->new($_->rect->x - 33, $_->rect->y - 38,
+                                                                                      71,100),
+                                                               started => $now);
+          0;
+        } }
         @enemies;
 
     push @update_rects, get_enemies_rects(@enemies);
+
+  }
+
+  if (@explosions) {
+
+    push @update_rects, map { $_->rect } @explosions;
+
+    @explosions =
+      grep {
+        $_->time_lapse($oldtime, $now)
+      }
+        @explosions;
+
 
   }
 
@@ -106,6 +129,7 @@ sub timer_callback {
   $player->draw($Game::PerlInvaders::App::app) if $player;
   $shot->draw($Game::PerlInvaders::App::app) if $shot;
   $_->draw($Game::PerlInvaders::App::app) for @enemies;
+  $_->draw($Game::PerlInvaders::App::app) for @explosions;
 
   Game::PerlInvaders::App::end_frame(@update_rects);
 
@@ -126,6 +150,7 @@ sub setup_timer {
   Game::PerlInvaders::Enemy::setup;
   Game::PerlInvaders::Shot::setup;
   Game::PerlInvaders::Player::setup;
+  Game::PerlInvaders::Explosion::setup;
   $time = $Game::PerlInvaders::App::app->ticks;
 
   SDL::Time::add_timer(int(1000/$Game::PerlInvaders::Shared::FPS),'main::Game::PerlInvaders::Timer::timer_callback');
