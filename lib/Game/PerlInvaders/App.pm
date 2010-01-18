@@ -30,7 +30,7 @@ sub start_frame {
 }
 
 sub end_frame {
-  SDL::Video::update_rect($app, 0, 0, $app->w, $app->h);
+  SDL::Video::update_rects($app, @_);
 }
 
 42;
