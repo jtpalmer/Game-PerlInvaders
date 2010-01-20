@@ -136,11 +136,21 @@ sub timer_callback {
   $time = $Game::PerlInvaders::App::app->ticks;
 
   $time_acc += $time - $now;
-  if (++$time_acc_ctrl == 100) {
-    my $avg = $time_acc / 100;
+  if (++$time_acc_ctrl == $Game::PerlInvaders::Shared::FPS) {
+    my $avg = $time_acc / $Game::PerlInvaders::Shared::FPS;
     print "Average time is $avg\n";
+
+
     $time_acc = 0;
     $time_acc_ctrl = 0;
+  }
+
+  if (int(1000/$Game::PerlInvaders::Shared::FPS) < (0.8 * ($time - $now))) {
+    $Game::PerlInvaders::Shared::FPS = int($Game::PerlInvaders::Shared::FPS * 0.9);
+    print "Lowering fps to $Game::PerlInvaders::Shared::FPS\n";
+  } elsif (int(1000/$Game::PerlInvaders::Shared::FPS) > (3 * ($time - $now))) {
+    $Game::PerlInvaders::Shared::FPS = int($Game::PerlInvaders::Shared::FPS * 1.1);
+    print "Increasing fps to $Game::PerlInvaders::Shared::FPS\n";
   }
 
   return int(1000/$Game::PerlInvaders::Shared::FPS);
