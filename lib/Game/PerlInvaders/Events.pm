@@ -6,20 +6,28 @@ use utf8;
 use threads;
 use threads::shared;
 
-use SDL::Constants;
+use SDL;
 use SDL::Event;
 use SDL::Events;
 
+sub stop_game
+{
+
+	lock $Game::PerlInvaders::Shared::game_running;
+	$Game::PerlInvaders::Shared::game_running = 0;
+}
+
 sub loop {
   my $sevent = SDL::Event->new;
-  while (SDL::Events::wait_event($sevent)) {
+   
+  while (SDL::Events::wait_event($sevent) && $Game::PerlInvaders::Shared::game_running) {
     my $type = $sevent->type;
     if ($type == SDL_QUIT()) {
-      exit;
+      stop_game;
 
     } elsif ($type == SDL_KEYDOWN() &&
              $sevent->key_sym() == SDLK_ESCAPE) {
-      exit;
+      stop_game;
 
     } elsif ($type == SDL_KEYDOWN() &&
              $sevent->key_sym() == SDLK_F11) {

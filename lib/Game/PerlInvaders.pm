@@ -20,6 +20,7 @@ sub setup {
 
 sub run {
   Game::PerlInvaders::Events::loop;
+  SDL::quit;
 }
 
 42;

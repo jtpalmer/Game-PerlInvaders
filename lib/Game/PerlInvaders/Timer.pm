@@ -153,7 +153,12 @@ sub timer_callback {
     print "Increasing fps to $Game::PerlInvaders::Shared::FPS\n";
   }
 
+  if ($Game::PerlInvaders::Shared::game_running == 0)
+  {
+	  return 0;
+  }
   return int(1000/$Game::PerlInvaders::Shared::FPS);
+
 }
 
 sub setup_timer {
