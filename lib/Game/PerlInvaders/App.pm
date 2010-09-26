@@ -6,7 +6,7 @@ use utf8;
 use threads;
 use threads::shared;
 
-use SDL::App;
+use SDLx::App;
 use SDL::Image;
 use SDL::Video;
 
@@ -16,10 +16,10 @@ our $app_rect;
 my $bg;
 
 sub setup_app {
-  $app = SDL::App->new
-    ( -width  => $Game::PerlInvaders::Shared::width,
-      -height => $Game::PerlInvaders::Shared::height,
-      -depth  => 16 );
+  $app = SDLx::App->new
+    ( width  => $Game::PerlInvaders::Shared::width,
+      height => $Game::PerlInvaders::Shared::height,
+      depth  => 16 );
   $bg = SDL::Image::load('stuff/stars.png');
   $app_rect = SDL::Rect->new(0, 0, $bg->w, $bg->h);
 }
